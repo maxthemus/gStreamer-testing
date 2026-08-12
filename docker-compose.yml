@@ -1,0 +1,29 @@
+services:
+  rtsp-mock:
+    image: bluenviron/mediamtx:latest
+    container_name: rtsp-mock
+    ports:
+      - "8554:8554"
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    networks:
+      - streaming
+
+  dlstreamer-dev:
+    build: .
+    container_name: dlstreamer-dev
+    volumes:
+      #- ./models:/workspace/models:ro
+      #- ./model_proc:/workspace/model_proc:ro
+      #- ./videos:/workspace/videos:ro
+      - ./:/workspace/
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rtsp-mock
+    networks:
+      - streaming
+
+networks:
+  streaming:
+    driver: bridge
