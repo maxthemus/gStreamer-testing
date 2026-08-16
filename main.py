@@ -162,6 +162,9 @@ def on_message(bus, message, loop):
         err, debug = message.parse_error()
         print(f"Error: {err}, {debug}")
         loop.quit()
+    elif t == Gst.MessageType.WARNING:
+        warn, debug = message.parse_warning()
+        print(f"GStreamer WARNING: {warn}\nDebug: {debug}")
 
 
 bus.connect("message", on_message, loop)
